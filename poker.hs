@@ -1,3 +1,4 @@
+import IO
 import Data.List ( group, groupBy, sort, sortBy )
 import Data.Ord ( comparing )
 import System.Random
@@ -69,7 +70,8 @@ do_discarding orig_hand hand = do
         do_discarding orig_hand new_hand
 
 main :: IO ()
-main = do stdGen <- getStdGen 
+main = do hSetBuffering stdout NoBuffering 
+          stdGen <- getStdGen 
           play_game [] stdGen
 
 play_game :: [Card] -> StdGen -> IO ()
