@@ -1,3 +1,6 @@
+run : poker.hs
+	runghc $<
+
 poker : poker.hs
 	ghc $< -o $@
 
