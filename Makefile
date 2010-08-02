@@ -1,8 +1,8 @@
-run : poker.hs
+run : PokerGame.hs
 	runghc $<
 
-poker : poker.hs
-	ghc $< -o $@
+PokerGame : PokerGame.hs PlayingCards.hs PokerHands.hs
+	ghc --make $@
 
 clean :
-	$(RM) poker poker.o *.hi
+	$(RM) PokerGame *.o *.hi
