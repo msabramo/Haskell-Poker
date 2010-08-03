@@ -46,13 +46,13 @@ rank_matches hand =
                  second_biggest_group   = group_hand hand !! 1 
              in
              case length biggest_group of
-                  4 -> Just ("*** Four of a kind", [biggest_group])
+                  4 -> Just ("Four of a kind", [biggest_group])
                   3 -> case length second_biggest_group of
-                            2 -> Just ("*** Full house", [biggest_group, second_biggest_group])
-                            _ -> Just ("*** Three of a kind", [biggest_group])
+                            2 -> Just ("Full house", [biggest_group, second_biggest_group])
+                            _ -> Just ("Three of a kind", [biggest_group])
                   2 -> case length second_biggest_group of
-                            2 -> Just ("*** Two pair", [biggest_group, second_biggest_group])
-                            _ -> Just ("*** Two of a kind", [biggest_group])
+                            2 -> Just ("Two pair", [biggest_group, second_biggest_group])
+                            _ -> Just ("Two of a kind", [biggest_group])
                   _ -> Nothing
 
 {-
@@ -109,9 +109,8 @@ test_hands (hand_tuples:rest) =
                  test_hands rest
 test_hands _ = do putStrLn ("Done testing hands.")
 
-test = 
-     let hands = [
-                   [ "AS", "AH", "KC", "QD", "JH" ]    -- Two_of_a_kind
+testPokerHands = 
+     let hands = [ [ "AS", "AH", "KC", "QD", "JH" ]    -- Two_of_a_kind
                  , [ "AS", "AH", "KC", "KD", "JH" ]    -- Two_pair
                  , [ "AS", "AH", "AC", "QD", "JH" ]    -- Three_of_a_kind
                  , [ "AS", "AH", "AC", "QD", "QH" ]    -- Full_house
@@ -121,24 +120,31 @@ test =
                  , [ "2D", "3D", "8D", "5D", "6D" ]    -- Flush (Diamonds)
                  , [ "2C", "3C", "8C", "5C", "6C" ]    -- Flush (Clubs)
                  , [ "2S", "3S", "8S", "5S", "6S" ]    -- Flush (Spades)
-{--
- -- The old way of representing cards was kinda verbose and annoying:                
- --
-                   [ ("A", "S"), ("A", "H"), ("K", "C"), ("Q", "D"), ("J", "H") ]    -- Two_of_a_kind
-                 , [ ("A", "S"), ("A", "H"), ("K", "C"), ("K", "D"), ("J", "H") ]    -- Two_pair
-                 , [ ("A", "S"), ("A", "H"), ("A", "C"), ("Q", "D"), ("J", "H") ]    -- Three_of_a_kind
-                 , [ ("A", "S"), ("A", "H"), ("A", "C"), ("Q", "D"), ("Q", "H") ]    -- Full_house
-                 , [ ("A", "S"), ("A", "H"), ("A", "C"), ("A", "D"), ("J", "H") ]    -- Four_of_a_kind
- -}
-{--
- -- The even older way of representing cards was even more verbose and annoying:                
- --
-                   [Card Ace Spades, Card Ace Hearts, Card King Clubs, Card Queen Diamonds, Card Jack Hearts]    -- Two_of_a_kind
-                 , [Card Ace Spades, Card Ace Hearts, Card King Clubs, Card King Diamonds, Card Jack Hearts]     -- Two_pair
-                 , [Card Ace Spades, Card Ace Hearts, Card Ace Clubs, Card Queen Diamonds, Card Jack Hearts]     -- Three_of_a_kind
-                 , [Card Ace Spades, Card Ace Hearts, Card Ace Clubs, Card Queen Diamonds, Card Queen Hearts]    -- Full_house
-                 , [Card Ace Spades, Card Ace Hearts, Card Ace Clubs, Card Ace Diamonds, Card Jack Hearts]       -- Four_of_a_kind
-                 , [Card (NumericRank 9) Spades, Card (NumericRank 10) Hearts, Card Jack Clubs, Card Queen Diamonds, Card King Hearts]   -- Straight
- --}
                  ] in
          test_hands hands
+
+string_to_card str =
+              let first = head str
+                  second = last str
+                  rank = case first of
+                              '2'  -> Two
+                              '3'  -> Three
+                              '4'  -> Four
+                              '5'  -> Five
+                              '6'  -> Six
+                              '7'  -> Seven
+                              '8'  -> Eight
+                              '9'  -> Nine
+                              '1'  -> Ten
+                              'J'  -> Jack
+                              'Q'  -> Queen
+                              'K'  -> King
+                              'A'  -> Ace
+                  suit = case second of
+                              'H' -> Hearts
+                              'D' -> Diamonds
+                              'C' -> Clubs
+                              'S' -> Spades 
+              in Card rank suit
+
+hand_from_string_list strs = map string_to_card strs

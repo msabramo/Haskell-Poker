@@ -29,30 +29,6 @@ data Suit = Hearts | Diamonds | Clubs | Spades
 data Card = Card { rank :: Rank, suit :: Suit } | BlankCard
      deriving (Eq)
 
-string_to_card str =
-              let first = head str
-                  second = last str
-                  rank = case first of
-                              '2'  -> Two
-                              '3'  -> Three
-                              '4'  -> Four
-                              '5'  -> Five
-                              '6'  -> Six
-                              '7'  -> Seven
-                              '8'  -> Eight
-                              '9'  -> Nine
-                              '1' -> Ten
-                              'J'  -> Jack
-                              'Q'  -> Queen
-                              'K'  -> King
-                              'A'  -> Ace
-                  suit = case second of
-                              'H' -> Hearts
-                              'D' -> Diamonds
-                              'C' -> Clubs
-                              'S' -> Spades 
-              in Card rank suit
-
 instance Show Card where
          show BlankCard = "--"
          show card = show (rank card) ++ [head $ show $ suit card]
